@@ -1,0 +1,406 @@
+/* ==========================================================================
+   CodeAtmos — LeetCode Theme Lab: Theme Stylesheet
+   Milestone 1: Midnight Lab & Warm Paper
+   
+   Architecture:
+   - Root scoped to `html[data-code-atmos-theme="..."]`.
+   - 100% INERT when the theme is 'off' (data attribute removed).
+   - Designed with CSS custom property tokens.
+   - Does NOT alter syntax tokens (.mtk*) to preserve code readability.
+   - Instant transitions on editor elements to avoid typing latency.
+   ========================================================================== */
+
+/* ==========================================================================
+   SECTION 1: DESIGN SYSTEM TOKENS (CSS CUSTOM PROPERTIES)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1.1 Midnight Lab Theme Tokens
+   Mood: Deep navy surfaces, indigo structure, luminous violet accents.
+   -------------------------------------------------------------------------- */
+html[data-code-atmos-theme="midnight"] {
+  /* Page & Panel Surfaces */
+  --ca-bg-base: #080c16;             /* Page root and deep background */
+  --ca-bg-panel: #0e1628;            /* Primary cards, problem panel, editor container */
+  --ca-bg-panel-elevated: #141f38;   /* Floating dialogs, active tabs, header */
+  --ca-bg-panel-hover: #1b294b;      /* Interactive hover surfaces */
+  --ca-bg-subtle: #0b1120;           /* Inactive tabs, console backgrounds */
+
+  /* Text & Labels */
+  --ca-text-primary: #f1f5f9;        /* Maximum contrast body and titles */
+  --ca-text-secondary: #94a3b8;      /* Metadata, instructions, secondary tags */
+  --ca-text-muted: #64748b;          /* Hints, timestamps, placeholder text */
+
+  /* Borders & Dividers */
+  --ca-border-subtle: rgba(255, 255, 255, 0.08);
+  --ca-border-medium: rgba(255, 255, 255, 0.15);
+  --ca-border-accent: #6366f1;
+
+  /* Accent & Highlighting */
+  --ca-accent: #818cf8;              /* Primary indigo/violet accent */
+  --ca-accent-vivid: #a855f7;        /* Highlights, active badges */
+  --ca-accent-hover: #9333ea;
+  --ca-accent-tint: rgba(129, 140, 248, 0.12);
+
+  /* Code Editor Surfaces (Monaco Canvas) */
+  --ca-editor-bg: #0a101f;
+  --ca-editor-gutter-bg: #080c16;
+  --ca-editor-gutter-text: #475569;
+  --ca-editor-current-line: rgba(99, 102, 241, 0.09);
+  --ca-editor-selection: rgba(99, 102, 241, 0.28);
+  --ca-editor-cursor: #a855f7;
+
+  /* Scrollbars */
+  --ca-scrollbar-thumb: rgba(255, 255, 255, 0.14);
+  --ca-scrollbar-thumb-hover: rgba(255, 255, 255, 0.24);
+}
+
+/* --------------------------------------------------------------------------
+   1.2 Warm Paper Theme Tokens
+   Mood: Warm cream parchment surfaces, roasted espresso contrast, amber accents.
+   -------------------------------------------------------------------------- */
+html[data-code-atmos-theme="paper"] {
+  /* Page & Panel Surfaces */
+  --ca-bg-base: #f5f2e9;             /* Soft cream root background */
+  --ca-bg-panel: #ede6d6;            /* Primary panels, problem description */
+  --ca-bg-panel-elevated: #e3dccb;   /* Active tabs, top bar, modal cards */
+  --ca-bg-panel-hover: #dcd3bf;      /* Interactive hover surfaces */
+  --ca-bg-subtle: #eae2d1;           /* Inactive tabs, console panels */
+
+  /* Text & Labels */
+  --ca-text-primary: #2d231a;        /* Deep roasted espresso readable text */
+  --ca-text-secondary: #5e4c3e;      /* Warm brown secondary descriptions */
+  --ca-text-muted: #8d7a6b;          /* Muted helper text */
+
+  /* Borders & Dividers */
+  --ca-border-subtle: rgba(45, 35, 26, 0.08);
+  --ca-border-medium: rgba(45, 35, 26, 0.16);
+  --ca-border-accent: #d97706;
+
+  /* Accent & Highlighting */
+  --ca-accent: #d97706;              /* Warm rich amber */
+  --ca-accent-vivid: #b45309;        /* Deep amber/copper for badges */
+  --ca-accent-hover: #92400e;
+  --ca-accent-tint: rgba(217, 119, 6, 0.12);
+
+  /* Code Editor Surfaces (Monaco Canvas) */
+  --ca-editor-bg: #f9f7f1;
+  --ca-editor-gutter-bg: #eee7d8;
+  --ca-editor-gutter-text: #968676;
+  --ca-editor-current-line: rgba(217, 119, 6, 0.08);
+  --ca-editor-selection: rgba(217, 119, 6, 0.22);
+  --ca-editor-cursor: #d97706;
+
+  /* Scrollbars */
+  --ca-scrollbar-thumb: rgba(45, 35, 26, 0.16);
+  --ca-scrollbar-thumb-hover: rgba(45, 35, 26, 0.28);
+}
+
+
+/* ==========================================================================
+   SECTION 2: ROOT PAGE SHELL & GLOBAL RESETS
+   ========================================================================== */
+
+/* Page Background & Global Typography Color */
+html[data-code-atmos-theme],
+html[data-code-atmos-theme] body {
+  background-color: var(--ca-bg-base) !important;
+  color: var(--ca-text-primary);
+}
+
+/* Custom Scrollbars under CodeAtmos */
+html[data-code-atmos-theme] *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html[data-code-atmos-theme] *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html[data-code-atmos-theme] *::-webkit-scrollbar-thumb {
+  background-color: var(--ca-scrollbar-thumb);
+  border-radius: 4px;
+}
+
+html[data-code-atmos-theme] *::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ca-scrollbar-thumb-hover);
+}
+
+
+/* ==========================================================================
+   SECTION 3: DOCUMENTED LEETCODE SHELL & LAYOUT SELECTORS
+   --------------------------------------------------------------------------
+   Assumptions & Targeting Strategy:
+   LeetCode problem pages use modern Next.js / Tailwind CSS layouts.
+   These selectors target major layout landmarks, navigation headers,
+   split-view panes, and tab wrappers.
+   ========================================================================== */
+
+/* Top Navigation Bar */
+html[data-code-atmos-theme] nav,
+html[data-code-atmos-theme] #navbar-root,
+html[data-code-atmos-theme] header {
+  background-color: var(--ca-bg-base) !important;
+  border-bottom: 1px solid var(--border-subtle, var(--ca-border-subtle)) !important;
+}
+
+/* Main Split Pane Containers */
+html[data-code-atmos-theme] #qd-content,
+html[data-code-atmos-theme] [data-layout-path],
+html[data-code-atmos-theme] .layout__content {
+  background-color: var(--ca-bg-base);
+}
+
+/* Split Pane Separators / Resizers */
+html[data-code-atmos-theme] [data-divider="true"],
+html[data-code-atmos-theme] .gutter,
+html[data-code-atmos-theme] .split-bar {
+  background-color: var(--ca-bg-base) !important;
+  border-color: var(--ca-border-subtle) !important;
+}
+
+/* Panel Header Bars and Tab Strips */
+html[data-code-atmos-theme] [role="tablist"],
+html[data-code-atmos-theme] .tab-header,
+html[data-code-atmos-theme] .flex.items-center[class*="border-b"] {
+  background-color: var(--ca-bg-subtle);
+  border-bottom-color: var(--ca-border-subtle) !important;
+}
+
+/* Active & Inactive Tabs */
+html[data-code-atmos-theme] [role="tab"] {
+  color: var(--ca-text-secondary);
+}
+
+html[data-code-atmos-theme] [role="tab"][aria-selected="true"],
+html[data-code-atmos-theme] [role="tab"].active {
+  color: var(--ca-text-primary) !important;
+  border-bottom-color: var(--ca-accent) !important;
+}
+
+
+/* ==========================================================================
+   SECTION 4: DOCUMENTED LEETCODE SEMANTIC UTILITY OVERRIDES
+   --------------------------------------------------------------------------
+   Assumptions & Targeting Strategy:
+   LeetCode's design system uses semantic Tailwind classes for layered
+   surfaces and label hierarchies:
+   - Surfaces: .bg-layer-*, .bg-fill-*, .bg-overlay-*
+   - Text: .text-label-*, .text-text-*
+   - Borders: .border-border-*, .border-divider-*
+   
+   Overriding these tokens maps LeetCode's multi-tier design to CodeAtmos.
+   ========================================================================== */
+
+/* 4.1 Background Layers */
+html[data-code-atmos-theme] .bg-layer-bg {
+  background-color: var(--ca-bg-base) !important;
+}
+
+html[data-code-atmos-theme] .bg-layer-1,
+html[data-code-atmos-theme] .bg-paper {
+  background-color: var(--ca-bg-panel) !important;
+}
+
+html[data-code-atmos-theme] .bg-layer-2,
+html[data-code-atmos-theme] .bg-fill-2 {
+  background-color: var(--ca-bg-subtle) !important;
+}
+
+html[data-code-atmos-theme] .bg-layer-3,
+html[data-code-atmos-theme] .bg-fill-3,
+html[data-code-atmos-theme] .bg-overlay-2 {
+  background-color: var(--ca-bg-panel-elevated) !important;
+}
+
+html[data-code-atmos-theme] .hover\:bg-fill-2:hover,
+html[data-code-atmos-theme] .hover\:bg-layer-2:hover {
+  background-color: var(--ca-bg-panel-hover) !important;
+}
+
+/* 4.2 Text Color Hierarchies */
+html[data-code-atmos-theme] .text-label-1,
+html[data-code-atmos-theme] .text-text-primary {
+  color: var(--ca-text-primary) !important;
+}
+
+html[data-code-atmos-theme] .text-label-2,
+html[data-code-atmos-theme] .text-text-secondary {
+  color: var(--ca-text-secondary) !important;
+}
+
+html[data-code-atmos-theme] .text-label-3,
+html[data-code-atmos-theme] .text-label-4 {
+  color: var(--ca-text-muted) !important;
+}
+
+/* 4.3 Borders and Dividers */
+html[data-code-atmos-theme] .border-border-1,
+html[data-code-atmos-theme] .border-divider-border-2,
+html[data-code-atmos-theme] .border-divider-3 {
+  border-color: var(--ca-border-subtle) !important;
+}
+
+html[data-code-atmos-theme] .border-border-2,
+html[data-code-atmos-theme] .border-border-3 {
+  border-color: var(--ca-border-medium) !important;
+}
+
+
+/* ==========================================================================
+   SECTION 5: PROBLEM DESCRIPTION & MARKDOWN FORMATTING
+   --------------------------------------------------------------------------
+   Assumptions & Targeting Strategy:
+   Problem statement markdown renders inside description wrappers
+   (e.g., [data-track-load="description_content"], .elfjS).
+   We restyle the problem text, example cards, and inline tags.
+   ========================================================================== */
+
+/* Problem description container */
+html[data-code-atmos-theme] [data-track-load="description_content"],
+html[data-code-atmos-theme] .elfjS,
+html[data-code-atmos-theme] [data-key="description-content"] {
+  color: var(--ca-text-primary);
+  background-color: var(--ca-bg-panel);
+}
+
+/* Problem Headings and Paragraphs */
+html[data-code-atmos-theme] [data-track-load="description_content"] h1,
+html[data-code-atmos-theme] [data-track-load="description_content"] h2,
+html[data-code-atmos-theme] [data-track-load="description_content"] h3,
+html[data-code-atmos-theme] [data-track-load="description_content"] h4,
+html[data-code-atmos-theme] [data-track-load="description_content"] strong,
+html[data-code-atmos-theme] .elfjS strong {
+  color: var(--ca-text-primary) !important;
+}
+
+html[data-code-atmos-theme] [data-track-load="description_content"] p,
+html[data-code-atmos-theme] [data-track-load="description_content"] li,
+html[data-code-atmos-theme] .elfjS p,
+html[data-code-atmos-theme] .elfjS li {
+  color: var(--ca-text-secondary);
+}
+
+/* Example Code Blocks in Problem Description */
+html[data-code-atmos-theme] [data-track-load="description_content"] pre,
+html[data-code-atmos-theme] .elfjS pre,
+html[data-code-atmos-theme] .example-block {
+  background-color: var(--ca-bg-subtle) !important;
+  border: 1px solid var(--ca-border-subtle) !important;
+  color: var(--ca-text-primary) !important;
+  border-radius: 6px;
+}
+
+/* Inline Code tags */
+html[data-code-atmos-theme] [data-track-load="description_content"] code,
+html[data-code-atmos-theme] .elfjS code {
+  background-color: var(--ca-bg-panel-elevated) !important;
+  color: var(--ca-accent) !important;
+  border: 1px solid var(--ca-border-subtle) !important;
+}
+
+
+/* ==========================================================================
+   SECTION 6: MONACO CODE EDITOR SURFACES & GUTTERS
+   --------------------------------------------------------------------------
+   CRITICAL SAFETY RULE:
+   Do NOT style .mtk* syntax token classes!
+   Preserve code syntax highlighting, token colors, and editor functionality.
+   Only restyle the canvas surfaces, line gutter, current line, and selection.
+   ========================================================================== */
+
+/* Main Monaco Editor Container Canvas */
+html[data-code-atmos-theme] .monaco-editor,
+html[data-code-atmos-theme] .monaco-editor-background,
+html[data-code-atmos-theme] .monaco-editor .inputarea.ime-input {
+  background-color: var(--ca-editor-bg) !important;
+}
+
+/* Line Number Gutter */
+html[data-code-atmos-theme] .monaco-editor .margin {
+  background-color: var(--ca-editor-gutter-bg) !important;
+  border-right: 1px solid var(--ca-border-subtle);
+}
+
+html[data-code-atmos-theme] .monaco-editor .line-numbers {
+  color: var(--ca-editor-gutter-text) !important;
+}
+
+html[data-code-atmos-theme] .monaco-editor .line-numbers.active-line-number {
+  color: var(--ca-accent) !important;
+}
+
+/* Active Line Highlight */
+html[data-code-atmos-theme] .monaco-editor .current-line,
+html[data-code-atmos-theme] .monaco-editor .view-overlays .current-line {
+  background-color: var(--ca-editor-current-line) !important;
+  border: none !important;
+}
+
+/* Text Selection in Editor */
+html[data-code-atmos-theme] .monaco-editor .selected-text {
+  background-color: var(--ca-editor-selection) !important;
+}
+
+/* Editor Cursor Caret */
+html[data-code-atmos-theme] .monaco-editor .cursor {
+  background-color: var(--ca-editor-cursor) !important;
+  border-color: var(--ca-editor-cursor) !important;
+}
+
+
+/* ==========================================================================
+   SECTION 7: CONSOLE, TESTCASES, & ACTION CONTROLS
+   --------------------------------------------------------------------------
+   Targets the bottom testcase runner panel, console tabs, and submit bar.
+   ========================================================================== */
+
+/* Testcase & Console Bottom Drawer */
+html[data-code-atmos-theme] [data-key="console-content"],
+html[data-code-atmos-theme] [data-track-load="console_container"],
+html[data-code-atmos-theme] .console-content {
+  background-color: var(--ca-bg-subtle) !important;
+  color: var(--ca-text-primary);
+}
+
+/* Testcase Input Previews */
+html[data-code-atmos-theme] .testcase-input,
+html[data-code-atmos-theme] .case-item,
+html[data-code-atmos-theme] div[class*="case-content"] {
+  background-color: var(--ca-bg-panel) !important;
+  border: 1px solid var(--ca-border-subtle) !important;
+  color: var(--ca-text-primary) !important;
+}
+
+/* Bottom Action Bar (Run / Submit) */
+html[data-code-atmos-theme] div[class*="run-code"],
+html[data-code-atmos-theme] footer,
+html[data-code-atmos-theme] div[class*="action-btn-container"] {
+  border-top-color: var(--ca-border-subtle) !important;
+}
+
+
+/* ==========================================================================
+   SECTION 8: PERFORMANCE, REDUCED MOTION, & TYPING LATENCY GUARDS
+   --------------------------------------------------------------------------
+   Typing animations or background transitions in editors create typing lag.
+   We disable transitions inside the Monaco editor tree and inputs.
+   ========================================================================== */
+
+/* Zero animation or transition inside editor elements while typing */
+html[data-code-atmos-theme] .monaco-editor,
+html[data-code-atmos-theme] .monaco-editor * {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Honor user accessibility preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html[data-code-atmos-theme] *,
+  html[data-code-atmos-theme] *::before,
+  html[data-code-atmos-theme] *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

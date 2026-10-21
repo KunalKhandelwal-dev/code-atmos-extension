@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeAtmos — LeetCode Theme Lab</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 2v7.31"></path>
+            <path d="M14 9.3V2"></path>
+            <path d="M8.5 2h7"></path>
+            <path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path>
+            <path d="M5.52 16h12.96"></path>
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <h1 class="brand-name">CodeAtmos</h1>
+          <span class="brand-tag">Theme Lab</span>
+        </div>
+      </div>
+      <span class="version-badge" aria-label="Version 0.1.0">v0.1.0</span>
+    </header>
+
+    <!-- Status Bar -->
+    <div class="status-bar" id="statusBar" aria-live="polite">
+      <span class="status-dot" id="statusDot" aria-hidden="true"></span>
+      <span class="status-text" id="statusText">Active: Native LeetCode (Off)</span>
+    </div>
+
+    <!-- Theme Selection Group -->
+    <main class="popup-main">
+      <p class="section-label" id="themeGroupLabel">Choose Atmosphere</p>
+
+      <div class="theme-group" role="radiogroup" aria-labelledby="themeGroupLabel">
+        <!-- Midnight Lab Card -->
+        <button
+          type="button"
+          role="radio"
+          class="theme-card"
+          id="themeCardMidnight"
+          data-theme="midnight"
+          aria-checked="false"
+          aria-label="Midnight Lab theme: deep navy surfaces, indigo tones, and violet accents"
+        >
+          <div class="card-indicator" aria-hidden="true">
+            <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="card-content">
+            <div class="card-header-row">
+              <span class="card-title">Midnight Lab</span>
+              <span class="active-pill">Active</span>
+            </div>
+            <p class="card-desc">Deep navy surfaces, indigo tones, violet accents</p>
+            <div class="swatches" aria-hidden="true">
+              <span class="swatch" style="background: #080d1a;" title="Navy base"></span>
+              <span class="swatch" style="background: #131d33;" title="Panel surface"></span>
+              <span class="swatch" style="background: #6366f1;" title="Indigo"></span>
+              <span class="swatch" style="background: #a855f7;" title="Violet accent"></span>
+            </div>
+          </div>
+        </button>
+
+        <!-- Warm Paper Card -->
+        <button
+          type="button"
+          role="radio"
+          class="theme-card"
+          id="themeCardPaper"
+          data-theme="paper"
+          aria-checked="false"
+          aria-label="Warm Paper theme: warm cream, espresso contrast, and amber accents"
+        >
+          <div class="card-indicator" aria-hidden="true">
+            <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="card-content">
+            <div class="card-header-row">
+              <span class="card-title">Warm Paper</span>
+              <span class="active-pill">Active</span>
+            </div>
+            <p class="card-desc">Warm cream parchment, espresso contrast, amber accents</p>
+            <div class="swatches" aria-hidden="true">
+              <span class="swatch" style="background: #f7f4ea;" title="Cream base"></span>
+              <span class="swatch" style="background: #ebe4d3;" title="Paper surface"></span>
+              <span class="swatch" style="background: #3c2f25;" title="Espresso text"></span>
+              <span class="swatch" style="background: #d97706;" title="Warm amber accent"></span>
+            </div>
+          </div>
+        </button>
+
+        <!-- Off / Native Option -->
+        <button
+          type="button"
+          role="radio"
+          class="theme-card off-card"
+          id="themeCardOff"
+          data-theme="off"
+          aria-checked="false"
+          aria-label="Native LeetCode: disable custom themes and restore default appearance"
+        >
+          <div class="card-indicator" aria-hidden="true">
+            <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="card-content">
+            <div class="card-header-row">
+              <span class="card-title">Native LeetCode (Off)</span>
+              <span class="active-pill">Active</span>
+            </div>
+            <p class="card-desc">Restore LeetCode's default styling & surfaces</p>
+          </div>
+        </button>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <div class="footer-tip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 14 14"></polyline>
+        </svg>
+        <span>Applies instantly without page reload</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
